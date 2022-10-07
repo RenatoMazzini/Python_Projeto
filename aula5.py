@@ -1,6 +1,19 @@
+from gettext import install
 import tkinter as tk
-#from PIL import ImageTk, Image
-#from numpy import imag
+import mysql.connector
+ #instalador mysql CMD
+#pip install mysql-connector 
+
+def conexao():
+    conexao = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = ""
+        db = "usuarios"
+)
+
+    print(conexao)
+
 
 def CadastrarUsuario():
     
@@ -44,8 +57,13 @@ def CadastrarUsuario():
     entry_sexo.place(x=160,y=100)
 
     def registrar_usuario():
-        print("Usuario registrado", "\n nome", entry_nome.get(), "\n sobrenome", entry_sobrenome.get(), "\n nascimento", entry_nascimento.get(), "\n cidade", entry_cidade.get(), "\n estado", entry_estado.get(), "\n sexo", entry_sexo.get())
-        
+        print("Usuario registrado", "\n O nome do(a) usuario(a) é:", entry_nome.get())
+        print("O sobrenome é:", entry_sobrenome.get())
+        print("A data de nascimento é:", entry_nascimento.get())
+        print("A cidade é:", entry_cidade.get())
+        print("O estado é:", entry_estado.get())
+        print("O sexo do usuario é:", entry_sexo.get())
+
     botao_cadastrar = tk.Button(janelaUsuarios,width=20, text= "Registrar usuario", command=registrar_usuario)
     botao_cadastrar.place(x=145, y= 130)
 
