@@ -4,15 +4,47 @@ import mysql.connector
  #instalador mysql CMD
 #pip install mysql-connector 
 
-def conexao():
-    conexao = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "",
-        db = "usuarios"
-)
+    
+class usuarios:
+    def __init__(self,id,nome,sobrenome,cidade,estado,data_nascimento):
+   
+            self.id =  id                  
+            self.nome = nome
+            self.sobrenome = sobrenome
+            self.cidade = cidade
+            self.estado = estado
+            self.data_nascimento = data_nascimento
 
-    print(conexao)
+#usuario1 = usuarios("1", 'renato', 'mazzini', 'taruma', 'Sp', '2003-04-20')  
+#print(usuario1.nome)   
+
+
+
+def conexao():
+    
+    try:
+        conexao = mysql.connector.connect(
+            host = "localhost",
+            user = "root",
+            passwd = "",
+            db = "banco_python"
+        )
+
+        print("conectado")
+        return conexao
+    
+    except mysql.connector.Error as e: 
+        print(f'Erro ao conectar ao servidor Mysql: {e}')
+
+        
+def desconectar(conexao):
+        if conexao:
+            conexao.close()
+
+def selecionarUsuarios():
+        conn = conexao()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM USUARIOS")
 
 
 def CadastrarUsuario():
@@ -50,22 +82,23 @@ def CadastrarUsuario():
     entry_estado = tk.Entry(janelaUsuarios)
     entry_estado.place(x=160,y=80)
 
-    lblCadastroUsuarios_sexo = tk.Label(janelaUsuarios, text="Informe o sexo:", font="Times", foreground="black")
-    lblCadastroUsuarios_sexo.place(x=10, y=100)
+    #lblCadastroUsuarios_sexo = tk.Label(janelaUsuarios, text="Informe o sexo:", font="Times", foreground="black")
+    #lblCadastroUsuarios_sexo.place(x=10, y=100)
 
-    entry_sexo = tk.Entry(janelaUsuarios)
-    entry_sexo.place(x=160,y=100)
+    #entry_sexo = tk.Entry(janelaUsuarios)
+    #entry_sexo.place(x=160,y=100)
 
     def registrar_usuario():
-        print("Usuario registrado", "\n O nome do(a) usuario(a) é:", entry_nome.get())
+        conn = conexao()
+        print("Usuario informado:", "\n O nome do(a) usuario(a) é:", entry_nome.get())
         print("O sobrenome é:", entry_sobrenome.get())
         print("A data de nascimento é:", entry_nascimento.get())
         print("A cidade é:", entry_cidade.get())
         print("O estado é:", entry_estado.get())
-        print("O sexo do usuario é:", entry_sexo.get())
+       # print("O sexo do usuario é:", entry_sexo.get())
 
     botao_cadastrar = tk.Button(janelaUsuarios,width=20, text= "Registrar usuario", command=registrar_usuario)
-    botao_cadastrar.place(x=145, y= 130)
+    botao_cadastrar.place(x=145, y= 110)
 
     janelaUsuarios.geometry("800x600")
 
