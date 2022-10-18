@@ -15,11 +15,6 @@ class usuarios:
             self.estado = estado
             self.data_nascimento = data_nascimento
 
-#usuario1 = usuarios("1", 'renato', 'mazzini', 'taruma', 'Sp', '2003-04-20')  
-#print(usuario1.nome)   
-
-
-
 def conexao():
     
     try:
@@ -45,12 +40,21 @@ def selecionarUsuarios():
         conn = conexao()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM USUARIOS")
+        table = cursor.fetchall()
+        print('\n Usuarios: ')
+        for row in table:
+                print(row[0], end="")
+                print(row[1], end="")
+                print(row[2], end="")
+                print(row[3], end="")
+
 
 
 def CadastrarUsuario():
     
     janelaUsuarios = tk.Toplevel(app)
     janelaUsuarios.title("Cadastro de Usuários")
+    selecionarUsuarios()
 
     lblCadastroUsuarios_nome = tk.Label(janelaUsuarios, text="Informe o nome:", font="Times", foreground="black")
     lblCadastroUsuarios_nome.place(x=10, y=0)    
