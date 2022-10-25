@@ -1,11 +1,12 @@
-from gettext import install
 import tkinter as tk
+from tkinter import ttk
 import mysql.connector
+from tkinter.messagebox import showinfo
  #instalador mysql CMD
 #pip install mysql-connector 
 
     
-class usuarios:
+class Usuarios:
     def __init__(self,id,nome,sobrenome,cidade,estado,data_nascimento):
    
             self.id =  id                  
@@ -43,13 +44,22 @@ def selecionarUsuarios():
         table = cursor.fetchall()
         print('\n Usuarios: ')
         for row in table:
-                print(row[0], end="")
-                print(row[1], end="")
-                print(row[2], end="")
-                print(row[3], end="")
+                print("Id:", row[0], end="\n")
+                print("Nome:", row[1], end="\n")
+                print("sobrenome:", row[2], end="\n")
+                print("cidade:", row[3], end="\n")
+                print("estado:", row[4], end="\n")
+                print("nascimento:", row[5], end="\n")
 
-
-
+def inserirUsuarios(usuario):
+        con = conexao()
+        cursor = con.cursor()
+        cursor.execute(
+        f"INSERT INTO usuarios(id, nome, sobrenome, cidade, estado, data_nascimento)" 
+        f"VALUES('{usuario.id}','{usuario.nome}','{usuario.sobrenome}','{usuario.cidade}','{usuario.estado}','{usuario.data_nascimento}')")
+        con.commit()
+        desconectar(con)
+        
 def CadastrarUsuario():
     
     janelaUsuarios = tk.Toplevel(app)
@@ -92,16 +102,20 @@ def CadastrarUsuario():
     #entry_sexo = tk.Entry(janelaUsuarios)
     #entry_sexo.place(x=160,y=100)
 
-    def registrar_usuario():
-        conn = conexao()
-        print("Usuario informado:", "\n O nome do(a) usuario(a) é:", entry_nome.get())
-        print("O sobrenome é:", entry_sobrenome.get())
-        print("A data de nascimento é:", entry_nascimento.get())
-        print("A cidade é:", entry_cidade.get())
-        print("O estado é:", entry_estado.get())
-       # print("O sexo do usuario é:", entry_sexo.get())
+    def salvarUsuario():
+        def salvarUsuario():
+            usuario = Usuarios(None, entryNome.get(), entrySobrenome.get(),entryCidade.get(),
+            entryEstado.get(), entryDataNascimento.get())
+            inserirUsuarios(usuario)
 
-    botao_cadastrar = tk.Button(janelaUsuarios,width=20, text= "Registrar usuario", command=registrar_usuario)
+        #print("Usuario informado:", "\n O nome do(a) usuario(a) é:", entry_nome.get())
+        #print("O sobrenome é:", entry_sobrenome.get())
+        #print("A cidade é:", entry_cidade.get())
+        #print("O estado é:", entry_estado.get())
+        #print("A data de nascimento é:", entry_nascimento.get())
+        #print("O sexo do usuario é:", entry_sexo.get())
+
+    botao_cadastrar = tk.Button(janelaUsuarios,width=20, text= "Registrar usuario", command=salvarUsuario)
     botao_cadastrar.place(x=145, y= 110)
 
     janelaUsuarios.geometry("800x600")
